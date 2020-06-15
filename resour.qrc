@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>bgpic.jpg</file>
+        <file>doctwo.png</file>
+        <file>firstpage.jpg</file>
+        <file>startbutton.jpg</file>
+        <file>stabtn.png</file>
+        <file>seat.jpg</file>
+        <file>nurseone.jpg</file>
+        <file>virusone.png</file>
+        <file>medone.png</file>
+    </qresource>
+</RCC>
