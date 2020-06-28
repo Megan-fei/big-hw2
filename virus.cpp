@@ -2,16 +2,22 @@
 #include "utility.h"
 #include "sceneone.h"
 #include <QDebug>
+#include <ctime>
+#include <QMediaPlayer>
+#include <QTimer>
 //construct function
 const QSize virus::fixedsize(30,41);//mayberevised
 
-virus::virus(WayPoint *startPoint,Sceneone *game,const QPixmap &fig) : QObject(0),position(startPoint->pos()),
+virus::virus(WayPoint *startPoint,Scene *game,const QPixmap &fig) : QObject(0),position(startPoint->pos()),
     figure(fig),game(game),goalpoint(startPoint->nextwaypoint())//??QObject(0)?
 {
     Hplife=300.0;//*canberevised
     Hpnow=300.0;//*canberevised
-    speed=5;//*canberevised
+    speed=2;//*canberevised
     rotation=0.0;
+    killedaward=400;
+    basicaward=200;
+    bonusaward=200;
 
     //active?
 }
@@ -93,32 +99,92 @@ void virus::activate()
 //*?
 void virus::getattacked(tower* towe)
 {
-    qDebug()<<"virus getattacked";
+    //qDebug()<<"virus getattacked";
     attackers.push_back(towe);
 }
 void virus::gotlostsight(tower *towe)
 {
-    qDebug()<<"virus gotlostsight";
+    //qDebug()<<"virus gotlostsight";
     attackers.removeOne(towe);
 }
 void virus::gethurt(int damage)
 {
-    qDebug()<<"virus gethurt";
+    //qDebug()<<"virus gethurt";
     Hpnow-=damage;
+    qsrand(time(NULL));
+    int bonus=basicaward+qrand()%bonusaward;
+   // qDebug("%d ",bonus);
+    game->award(bonus);
+    QMediaPlayer *player = new QMediaPlayer;
+    player->setMedia(QUrl("qrc:/sound/hurt.mp3"));
+    player->setVolume(50);
+    player->play();
     if(Hpnow<=0)
+    {
         this->getremoved();
+        game->award(killedaward);
+    }
 }
 void virus::getremoved()
 {
-    qDebug()<<"virus getremoved";
+    //qDebug()<<"virus getremoved";
     if(attackers.empty())
         return;
     foreach(tower* attacker,attackers)
         attacker->targetkilled();
     game->removeVirus(this);
 }
+void virus::slowdown()
+{
+    this->speed=0.85*speed;
+    QTimer *timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(recoverspeed()));//update the viruses every 40ms
+    timer->start(13000);
+}
+void virus::recoverspeed()
+{
+    this->speed=speed/0.85;
+}
 QPoint virus::pos() const
 {
     //qDebug()<<"virus pos";
     return position;
 }
+
+
+
+virust::virust(WayPoint *startPoint,Scene *game,const QPixmap &fig):virus(startPoint,game,QPixmap(":/virusflu.png"))
+{
+    Hplife=375.0;//*canberevised
+    Hpnow=375.0;//*canberevised
+    speed=3;
+    killedaward=450;
+    bonusaward=200;
+    basicaward=100;
+}
+virust::~virust()
+{}
+
+virusth::virusth(WayPoint *startPoint,Scene *game,const QPixmap &fig):virus(startPoint,game,QPixmap(":/viruspoi.png"))
+{
+    Hplife=900.0;//*canberevised
+    Hpnow=900.0;//*canberevised
+    speed=2.5;
+    killedaward=600;
+    bonusaward=75;
+    basicaward=150;
+}
+virusth::~virusth()
+{}
+
+virusf::virusf(WayPoint *startPoint,Scene *game,const QPixmap &fig):virus(startPoint,game,QPixmap(":/virusboss.png"))
+{
+    Hplife=4500.0;//*canberevised
+    Hpnow=4500.0;//*canberevised
+    speed=1.5;
+    killedaward=5000;
+    bonusaward=100;
+    basicaward=20;
+}
+virusf::~virusf()
+{}

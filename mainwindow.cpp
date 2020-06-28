@@ -14,14 +14,23 @@ MainWindow::MainWindow(QWidget *parent) ://mainwindow的构造函数，只调用
 {
     this->setFixedSize(800,600);
     ui->setupUi(this);
-    button *startbutton = new button(":/stabtn.png");
-    startbutton->setParent(this);
-    startbutton->move(320,400);
-    Sceneone *so = new Sceneone;
-    connect(startbutton,&button::clicked,this,[=](){
+    button *startbutton1 = new button(":/stabtn.png");
+    startbutton1->setParent(this);
+    startbutton1->move(200,400);
+    connect(startbutton1,&button::clicked,this,[=](){
+        Sceneone *so = new Sceneone;
         this->close();
         so->show();
     });
+    button *startbutton2 = new button(":/stabtn.png");
+    startbutton2->setParent(this);
+    startbutton2->move(560,400);
+    connect(startbutton2,&button::clicked,this,[=](){
+            Scenetwo *st = new Scenetwo;
+        this->close();
+        st->show();
+    });
+
 
 }
 

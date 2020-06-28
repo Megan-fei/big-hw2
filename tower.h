@@ -8,13 +8,13 @@
 
 class QPainter;
 class virus;
-class Sceneone;
+class Scene;
 class QTimer;
-class tower:QObject
+class tower:public QObject
 {
     Q_OBJECT
 public:
-    tower(QPoint pos,Sceneone *scene, const QPixmap &fig=QPixmap(":/nurseone.jpg"));
+    tower(QPoint pos,Scene *scene, const QString pix=":/nurseone.jpg");
     void draw(QPainter *painter) const;
     ~tower();
     void startattack();//attackenemy
@@ -25,25 +25,42 @@ public:
     void losesight();//lostsightofenemy
 
     //??
+    void upup();
 
 
 public slots:
     void shoot();//shootweapon
-private:
+protected:
     QPoint position;//center position
     int attackrange;
     int damage;
     int firerate;
-    const QPixmap figure;
+    //const QPixmap figure;
 
     qreal rotation;
     virus* chosenenemy;
     QTimer* timer;
-    Sceneone* game;
+    Scene* game;
 
     bool whetherattacking;
 
+    QString pix;
+
     static const QSize fixedsize;//the size of the tower
 };
+
+class towert:public tower
+{
+    Q_OBJECT
+public:
+    towert(QPoint pos,Scene *scene, const QString pix);
+    ~towert();
+    //QTimer* timer2;
+    void upup();
+public slots:
+    void shoot2();
+
+};
+
 
 #endif // TOWER_H

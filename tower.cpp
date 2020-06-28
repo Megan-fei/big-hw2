@@ -11,14 +11,25 @@
 
 const QSize tower::fixedsize(49,64);//????????????revise!!!
 //construct function
-tower::tower(QPoint pos,Sceneone *game, const QPixmap &fig):chosenenemy(NULL),figure(fig),game(game)
+tower::tower(QPoint pos,Scene *game, const QString pix):chosenenemy(NULL),pix(pix),game(game)
 {
     position=pos;
-    attackrange=100;//@@@@@need to be set
-    damage=100;//@@@@@need to be set
+    attackrange=90;//@@@@@need to be set
+    damage=75;//@@@@@need to be set
     firerate=1000;//@@@@@@need to be set
     timer=new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(shoot()));
+}
+void tower::upup()
+{
+    if(game->showgold()>=15000)
+        {
+    attackrange=135;
+    damage=125;
+    firerate=800;
+    pix=":/zns.png";
+    game->spendmoney(15000);
+    }
 }
 //destruct function
 tower::~tower()
@@ -37,13 +48,14 @@ void tower::draw(QPainter *painter) const
     static const QPoint huansuan(-fixedsize.width()/2,-fixedsize.height()/2);//huansuan zuobiao
 //    painter.drawPixmap(huansuan+position,figure);
     painter->translate(position);
-    painter->drawPixmap(huansuan,figure);
+    painter->rotate(rotation);
+    painter->drawPixmap(huansuan,QPixmap(pix));
     painter->restore();
 }
 //
 void tower::startattack()
 {
-    qDebug()<<"startattack";
+    //qDebug()<<"startattack";
     timer->start(firerate);
 }
 void tower::chooseenemy(virus *viru)
@@ -55,8 +67,8 @@ void tower::chooseenemy(virus *viru)
 }
 void tower::shoot()
 {
-    qDebug()<<"tower shoot";
-    Medicine *med = new Medicine(position,chosenenemy->pos(),damage,chosenenemy,game);
+    //qDebug()<<"tower shoot";
+    Medicine *med = new Medicine(position,chosenenemy->pos(),damage,chosenenemy,game,QPixmap(":/medone.png"));
     med->move();
     game->addmed(med);
 }
@@ -97,7 +109,7 @@ void tower::checkenemy()
 }
 void tower::targetkilled()
 {
-    qDebug()<<"targetkilled";
+    //qDebug()<<"targetkilled";
     if(chosenenemy)
         chosenenemy=NULL;
     timer->stop();
@@ -105,10 +117,42 @@ void tower::targetkilled()
 }
 void tower::losesight()
 {
-    qDebug()<<"tower losesight";
+    //qDebug()<<"tower losesight";
     chosenenemy->gotlostsight(this);
     if(chosenenemy)
         chosenenemy=NULL;
     timer->stop();
     rotation=0.0;
+}
+
+
+towert::towert(QPoint pos,Scene *game, const QString):tower(pos,game,":/nurseone.jpg")
+{
+    attackrange=150;//@@@@@need to be set
+    damage=25;//@@@@@need to be set
+    firerate=1000;//@@@@@@need to be set
+    timer=new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(shoot2()));
+
+}
+towert::~towert()
+{}
+void towert::shoot2()
+{
+    qDebug()<<"s2";
+    Medicinet *med = new Medicinet(position,chosenenemy->pos(),damage,chosenenemy,game,QPixmap(":/zhen.jpg"));
+    med->move();
+    game->addmed(med);
+
+}
+void towert::upup()
+{
+    if(game->showgold()>=9000)
+    {
+    attackrange=180;
+    damage=50;
+    firerate=900;
+    pix=":/ndge.png";
+    game->spendmoney(9000);
+    }
 }

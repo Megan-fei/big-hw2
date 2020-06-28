@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>bgpic.jpg</file>
-        <file>doctwo.png</file>
         <file>firstpage.jpg</file>
         <file>startbutton.jpg</file>
         <file>stabtn.png</file>
@@ -9,5 +8,22 @@
         <file>nurseone.jpg</file>
         <file>virusone.png</file>
         <file>medone.png</file>
+        <file>virusboss.png</file>
+        <file>virusflu.png</file>
+        <file>viruspoi.png</file>
+        <file>btn.jpg</file>
+        <file>docone.png</file>
+        <file>zhen.jpg</file>
+        <file>zns.png</file>
+        <file>ndge.png</file>
+        <file>scene2.jpg</file>
+    </qresource>
+    <qresource prefix="/sound">
+        <file>bgm.mp3</file>
+        <file>freeze.mp3</file>
+        <file>hurt.mp3</file>
+        <file>killed.wav</file>
+        <file>place.wav</file>
+        <file>shoot.mp3</file>
     </qresource>
 </RCC>

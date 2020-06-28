@@ -6,6 +6,7 @@
 
 QT       += core gui
 CONFIG   += c++11
+QT       += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    buildbtn.cpp \
         main.cpp \
         mainwindow.cpp \
     button.cpp \
@@ -34,9 +36,11 @@ SOURCES += \
     waypoint.cpp \
     virus.cpp \
     utility.cpp \
-    medicine.cpp
+    medicine.cpp \
+    audioplayer.cpp
 
 HEADERS += \
+    buildbtn.h \
         mainwindow.h \
     button.h \
     sceneone.h \
@@ -45,7 +49,8 @@ HEADERS += \
     waypoint.h \
     virus.h \
     utility.h \
-    medicine.h
+    medicine.h \
+    audioplayer.h
 
 FORMS += \
         mainwindow.ui
